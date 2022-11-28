@@ -1,0 +1,59 @@
+# Note: there are many handy hints in comments in this libgrt -- remove them when you've finalized your recipe
+# If your package is python based, we recommend using Grayskull to generate it instead:
+# https://github.com/conda-incubator/grayskull
+
+# Jinja variables help maintain the recipe as you'll update the version only here.
+# Using the name variable with the URL in line 14 is convenient
+# when copying and pasting from another recipe, but not really needed.
+{% set name = "libgrt" %}
+{% set version = "0.2.5.dev" %}
+
+package:
+  name: {{ name|lower }}
+  version: {{ version }}
+
+source:
+  #url: https://github.com/nickgillian/grt/archive/refs/tags/v{{ version }}.tar.gz
+  url: https://github.com/BlackHC/grt/archive/refs/heads/master.tar.gz
+  # sha256: 55bcabe7a58916461dc4341758eff2a45bd5b236c263dfe6e58c176c1a7e1ac4
+  # sha256 is the preferred checksum -- you can get it for a file with:
+  #  `openssl sha256 <file name>`.
+  # You may need the openssl package, available on conda-forge:
+  #  `conda install openssl -c conda-forge``
+
+build:
+  number: 2
+  skip: True # [win]
+
+requirements:
+  build:
+    - python                                 # [build_platform != target_platform]
+    - cross-python_{{ target_platform }}     # [build_platform != target_platform]
+    - numpy                                  # [build_platform != target_platform]
+    - {{ compiler('cxx') }}
+    - swig
+    - cmake
+    - ninja
+  host:
+    - python
+    - numpy
+    - pip
+  run:
+    - python
+    - {{ pin_compatible('numpy') }}
+
+about:
+  home: https://github.com/nickgillian/grt
+  summary: 'gesture recognition toolkit'
+  description: |
+    The Gesture Recognition Toolkit (GRT) is a cross-platform, open-source, 
+    C++ machine learning library designed for real-time gesture recognition.
+  license: MIT
+  license_family: MIT
+  license_file: LICENSE
+  # The doc_url and dev_url are optional.
+  doc_url: https://nickgillian.com/grt/api/{{ version }}
+
+extra:
+  recipe-maintainers:
+    - BlackHC
