@@ -10,6 +10,7 @@ cmake ${CMAKE_ARGS} -G "Ninja"                                            \
     -DPYTHON_PACKAGES_PATH=${SP_DIR}                                      \
     -DPYTHON_EXECUTABLE=${PYTHON}                                         \
     -DBUILD_EXAMPLES=OFF                                                  \
+    -DBUILD_PYTHON_BINDING=OFF                                             \
     ..
 
 ninja install -v -j${CPU_COUNT}
